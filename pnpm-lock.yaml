@@ -40,7 +40,7 @@ importers:
         version: 2.1.1(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)
       '@nestjs/microservices':
         specifier: ^11.1.19
-        version: 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        version: 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/passport':
         specifier: ^11.0.5
         version: 11.0.5(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(passport@0.7.0)
@@ -77,6 +77,12 @@ importers:
       '@prisma/extension-accelerate':
         specifier: ^3.0.1
         version: 3.0.1(@prisma/client@7.8.0(prisma@7.8.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.9.3))(typescript@5.9.3))
+      amqp-connection-manager:
+        specifier: ^5.0.0
+        version: 5.0.0(amqplib@2.0.1)
+      amqplib:
+        specifier: ^2.0.1
+        version: 2.0.1
       axios:
         specifier: ^1.16.0
         version: 1.18.1
@@ -182,7 +188,7 @@ importers:
         version: 0.13.2
       '@nestjs/cli':
         specifier: ^11.0.14
-        version: 11.0.23(@types/node@24.13.2)(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)(prettier@3.8.4)
+        version: 11.0.23(@types/node@24.13.2)(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(prettier@3.8.4)
       '@nestjs/schematics':
         specifier: ^11.0.9
         version: 11.1.0(chokidar@4.0.3)(prettier@3.8.4)(typescript@5.9.3)
@@ -198,6 +204,9 @@ importers:
       '@semantic-release/npm':
         specifier: ^13.1.3
         version: 13.1.5(semantic-release@24.2.9(typescript@5.9.3))
+      '@types/amqplib':
+        specifier: ^0.10.8
+        version: 0.10.8
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
@@ -311,7 +320,7 @@ importers:
         version: 29.4.11(@babel/core@7.29.7)(@jest/transform@30.4.1)(@jest/types@30.4.1)(babel-jest@30.4.1(@babel/core@7.29.7))(jest-util@30.4.1)(jest@30.4.2(@types/node@24.13.2)(ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3)))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.4
-        version: 9.6.2(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15))
+        version: 9.6.2(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23))
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@24.13.2)(typescript@5.9.3)
@@ -1843,6 +1852,9 @@ packages:
   '@tybys/wasm-util@0.10.3':
     resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
+  '@types/amqplib@0.10.8':
+    resolution: {integrity: sha512-vtDp8Pk1wsE/AuQ8/Rgtm6KUZYqcnTgNvEHwzCkX8rL7AGsC6zqAfKAAJhUZXFhM/Pp++tbnUHiam/8vVpPztA==}
+
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
 
@@ -2359,6 +2371,16 @@ packages:
   alce@1.2.0:
     resolution: {integrity: sha512-XppPf2S42nO2WhvKzlwzlfcApcXHzjlod30pKmcWjRgLOtqoe5DMuqdiYoM6AgyXksc6A6pV4v1L/WW217e57w==}
     engines: {node: '>=0.8.0'}
+
+  amqp-connection-manager@5.0.0:
+    resolution: {integrity: sha512-88yQzqa5RSBgnLl504XjvCQJ7d+osskdwvg35Lwm1LRbfLjNU9p7SQUMSP82BB7mseiq9tIUPJ3HE3eXQbpjEw==}
+    engines: {node: '>=10.0.0', npm: '>5.0.0'}
+    peerDependencies:
+      amqplib: '*'
+
+  amqplib@2.0.1:
+    resolution: {integrity: sha512-a3P2MgfCf9nzVis12VxWEn0dS6hcqve7dlEAhXDtIWR27BlhtMkILOc+H9aeHjDi6i6r94dYKc2Kx2OFe3avvg==}
+    engines: {node: '>=18'}
 
   ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
@@ -3045,6 +3067,7 @@ packages:
   cron-parser@4.9.0:
     resolution: {integrity: sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==}
     engines: {node: '>=12.0.0'}
+    deprecated: v4 is no longer maintained, upgrade to v5
 
   cron@4.4.0:
     resolution: {integrity: sha512-fkdfq+b+AHI4cKdhZlppHveI/mgz2qpiYxcm+t5E5TsxX7QrLS1VE0+7GENEk9z0EeGPcpSciGv6ez24duWhwQ==}
@@ -3553,6 +3576,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -5084,11 +5108,6 @@ packages:
     resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
     engines: {node: '>=8.0.0'}
 
-  nanoid@3.3.15:
-    resolution: {integrity: sha512-y7Wygv/7mEOvxTuEQDB8StXdMRBWf1kR/tlhAzBRUFkB2jfcLOAxO/SHmOO2zgz1pVgK29/kyupn059/bCHdjA==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.16:
     resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -5879,10 +5898,6 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.15:
-    resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
-    engines: {node: ^10 || ^12 || >=14}
-
   postcss@8.5.23:
     resolution: {integrity: sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg==}
     engines: {node: ^10 || ^12 || >=14}
@@ -5986,6 +6001,9 @@ packages:
   progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
+
+  promise-breaker@6.0.0:
+    resolution: {integrity: sha512-BthzO9yTPswGf7etOBiHCVuugs2N01/Q/94dIPls48z2zCmrnDptUUZzfIb+41xq0MnYZ/BzmOd6ikDR4ibNZA==}
 
   promise@7.3.1:
     resolution: {integrity: sha512-nolQXZ/4L+bP/UGlkfaIujX9BKxGwmQ9OT4mOt5yvy8iK1h3wqTEJCijzGANTCCl9nWjY41juyAn2K3Q1hLLTg==}
@@ -7937,7 +7955,7 @@ snapshots:
   '@jest/console@30.4.1':
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       chalk: 4.1.2
       jest-message-util: 30.4.1
       jest-util: 30.4.1
@@ -7951,7 +7969,7 @@ snapshots:
       '@jest/test-result': 30.4.1
       '@jest/transform': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 4.4.0
@@ -7959,7 +7977,7 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       graceful-fs: 4.2.11
       jest-changed-files: 30.4.1
-      jest-config: 30.4.2(@types/node@24.13.2)(ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3))
+      jest-config: 30.4.2(@types/node@24.13.3)(ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3))
       jest-haste-map: 30.4.1
       jest-message-util: 30.4.1
       jest-regex-util: 30.4.0
@@ -7985,7 +8003,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       jest-mock: 30.4.1
 
   '@jest/expect-utils@30.4.1':
@@ -8003,7 +8021,7 @@ snapshots:
     dependencies:
       '@jest/types': 30.4.1
       '@sinonjs/fake-timers': 15.4.0
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       jest-message-util: 30.4.1
       jest-mock: 30.4.1
       jest-util: 30.4.1
@@ -8032,7 +8050,7 @@ snapshots:
       '@jest/transform': 30.4.1
       '@jest/types': 30.4.1
       '@jridgewell/trace-mapping': 0.3.31
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       chalk: 4.1.2
       collect-v8-coverage: 1.0.3
       exit-x: 0.2.2
@@ -8242,7 +8260,7 @@ snapshots:
       keyv: 5.6.0
       rxjs: 7.8.2
 
-  '@nestjs/cli@11.0.23(@types/node@24.13.2)(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)(prettier@3.8.4)':
+  '@nestjs/cli@11.0.23(@types/node@24.13.2)(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(prettier@3.8.4)':
     dependencies:
       '@angular-devkit/core': 19.2.27(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.27(chokidar@4.0.3)
@@ -8253,14 +8271,14 @@ snapshots:
       chokidar: 4.0.3
       cli-table3: 0.6.5
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.1.0(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15))
+      fork-ts-checker-webpack-plugin: 9.1.0(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23))
       glob: 13.0.6
       node-emoji: 1.11.0
       ora: 5.4.1
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
       typescript: 5.9.3
-      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)
+      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -8312,7 +8330,7 @@ snapshots:
       tslib: 2.8.1
       uid: 2.0.2
     optionalDependencies:
-      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 11.1.28(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)
       '@nestjs/websockets': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/platform-socket.io@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
 
@@ -8330,7 +8348,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.4
 
-  '@nestjs/microservices@11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
+  '@nestjs/microservices@11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.1.27)(@nestjs/platform-express@11.1.28)(@nestjs/websockets@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -8340,6 +8358,8 @@ snapshots:
       tslib: 2.8.1
     optionalDependencies:
       '@nestjs/websockets': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/platform-socket.io@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      amqp-connection-manager: 5.0.0(amqplib@2.0.1)
+      amqplib: 2.0.1
       cache-manager: 7.2.8
       ioredis: 5.11.1
 
@@ -8424,7 +8444,7 @@ snapshots:
       rxjs: 7.8.2
     optionalDependencies:
       '@nestjs/axios': 4.0.1(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.18.1)(rxjs@7.8.2)
-      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@prisma/client': 7.8.0(prisma@7.8.0(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.9.3))(typescript@5.9.3)
 
   '@nestjs/testing@11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/microservices@11.1.27)(@nestjs/platform-express@11.1.28)':
@@ -8433,7 +8453,7 @@ snapshots:
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@11.1.27)(@nestjs/platform-express@11.1.28)(@nestjs/websockets@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       tslib: 2.8.1
     optionalDependencies:
-      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/microservices': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(@nestjs/websockets@11.1.27)(amqp-connection-manager@5.0.0(amqplib@2.0.1))(amqplib@2.0.1)(cache-manager@7.2.8)(ioredis@5.11.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/platform-express': 11.1.28(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)
 
   '@nestjs/throttler@6.5.0(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)':
@@ -8919,6 +8939,10 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/amqplib@0.10.8':
+    dependencies:
+      '@types/node': 24.13.3
+
   '@types/babel__core@7.20.5':
     dependencies:
       '@babel/parser': 7.29.7
@@ -8951,11 +8975,11 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/cookie-parser@1.4.10(@types/express@5.0.6)':
     dependencies:
@@ -8965,7 +8989,7 @@ snapshots:
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/crypto-js@4.2.2': {}
 
@@ -9021,7 +9045,7 @@ snapshots:
   '@types/jsonwebtoken@9.0.10':
     dependencies:
       '@types/ms': 2.1.0
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/lodash@4.17.24': {}
 
@@ -9059,7 +9083,7 @@ snapshots:
 
   '@types/oauth@0.9.6':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/passport-google-oauth20@2.0.17':
     dependencies:
@@ -9095,7 +9119,7 @@ snapshots:
 
   '@types/pg@8.20.0':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       pg-protocol: 1.15.0
       pg-types: 2.2.0
 
@@ -9117,7 +9141,7 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/serve-static@2.2.0':
     dependencies:
@@ -9142,7 +9166,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -9499,6 +9523,13 @@ snapshots:
       esprima: 1.2.5
       estraverse: 1.9.3
     optional: true
+
+  amqp-connection-manager@5.0.0(amqplib@2.0.1):
+    dependencies:
+      amqplib: 2.0.1
+      promise-breaker: 6.0.0
+
+  amqplib@2.0.1: {}
 
   ansi-align@3.0.1:
     dependencies:
@@ -10244,11 +10275,6 @@ snapshots:
     dependencies:
       type-fest: 1.4.0
 
-  css-declaration-sorter@7.4.0(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-    optional: true
-
   css-declaration-sorter@7.4.0(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
@@ -10279,41 +10305,6 @@ snapshots:
     optional: true
 
   cssesc@3.0.0:
-    optional: true
-
-  cssnano-preset-default@7.0.17(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      css-declaration-sorter: 7.4.0(postcss@8.5.15)
-      cssnano-utils: 5.0.3(postcss@8.5.15)
-      postcss: 8.5.15
-      postcss-calc: 10.1.1(postcss@8.5.15)
-      postcss-colormin: 7.0.10(postcss@8.5.15)
-      postcss-convert-values: 7.0.12(postcss@8.5.15)
-      postcss-discard-comments: 7.0.8(postcss@8.5.15)
-      postcss-discard-duplicates: 7.0.4(postcss@8.5.15)
-      postcss-discard-empty: 7.0.3(postcss@8.5.15)
-      postcss-discard-overridden: 7.0.3(postcss@8.5.15)
-      postcss-merge-longhand: 7.0.7(postcss@8.5.15)
-      postcss-merge-rules: 7.0.11(postcss@8.5.15)
-      postcss-minify-font-values: 7.0.3(postcss@8.5.15)
-      postcss-minify-gradients: 7.0.5(postcss@8.5.15)
-      postcss-minify-params: 7.0.9(postcss@8.5.15)
-      postcss-minify-selectors: 7.1.2(postcss@8.5.15)
-      postcss-normalize-charset: 7.0.3(postcss@8.5.15)
-      postcss-normalize-display-values: 7.0.3(postcss@8.5.15)
-      postcss-normalize-positions: 7.0.4(postcss@8.5.15)
-      postcss-normalize-repeat-style: 7.0.4(postcss@8.5.15)
-      postcss-normalize-string: 7.0.3(postcss@8.5.15)
-      postcss-normalize-timing-functions: 7.0.3(postcss@8.5.15)
-      postcss-normalize-unicode: 7.0.9(postcss@8.5.15)
-      postcss-normalize-url: 7.0.3(postcss@8.5.15)
-      postcss-normalize-whitespace: 7.0.3(postcss@8.5.15)
-      postcss-ordered-values: 7.0.4(postcss@8.5.15)
-      postcss-reduce-initial: 7.0.9(postcss@8.5.15)
-      postcss-reduce-transforms: 7.0.3(postcss@8.5.15)
-      postcss-svgo: 7.1.3(postcss@8.5.15)
-      postcss-unique-selectors: 7.0.7(postcss@8.5.15)
     optional: true
 
   cssnano-preset-default@7.0.17(postcss@8.5.23):
@@ -10360,21 +10351,9 @@ snapshots:
       postcss-normalize-whitespace: 7.0.3(postcss@8.5.23)
     optional: true
 
-  cssnano-utils@5.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-    optional: true
-
   cssnano-utils@5.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-    optional: true
-
-  cssnano@7.1.9(postcss@8.5.15):
-    dependencies:
-      cssnano-preset-default: 7.0.17(postcss@8.5.15)
-      lilconfig: 3.1.3
-      postcss: 8.5.15
     optional: true
 
   cssnano@7.1.9(postcss@8.5.23):
@@ -10617,7 +10596,7 @@ snapshots:
   engine.io@6.6.9:
     dependencies:
       '@types/cors': 2.8.19
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       '@types/ws': 8.18.1
       accepts: 1.3.8
       base64id: 2.0.0
@@ -11147,7 +11126,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@9.1.0(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)):
+  fork-ts-checker-webpack-plugin@9.1.0(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)):
     dependencies:
       '@babel/code-frame': 7.29.7
       chalk: 4.1.2
@@ -11162,7 +11141,7 @@ snapshots:
       semver: 7.8.5
       tapable: 2.3.3
       typescript: 5.9.3
-      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)
+      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)
 
   form-data@4.0.6:
     dependencies:
@@ -11426,14 +11405,14 @@ snapshots:
       selderee: 0.12.0
     optional: true
 
-  htmlnano@3.3.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.23)(svgo@4.0.1)(terser@5.49.0)(typescript@5.9.3):
+  htmlnano@3.3.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(svgo@4.0.1)(terser@5.49.0)(typescript@5.9.3):
     dependencies:
       '@types/relateurl': 0.2.33
       commander: 14.0.3
       cosmiconfig: 9.0.2(typescript@5.9.3)
       posthtml: 0.16.7
     optionalDependencies:
-      cssnano: 7.1.9(postcss@8.5.15)
+      cssnano: 7.1.9(postcss@8.5.23)
       postcss: 8.5.23
       svgo: 4.0.1
       terser: 5.49.0
@@ -11833,7 +11812,7 @@ snapshots:
       '@jest/expect': 30.4.1
       '@jest/test-result': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.7.2
@@ -11904,6 +11883,38 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
+  jest-config@30.4.2(@types/node@24.13.3)(ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3)):
+    dependencies:
+      '@babel/core': 7.29.7
+      '@jest/get-type': 30.1.0
+      '@jest/pattern': 30.4.0
+      '@jest/test-sequencer': 30.4.1
+      '@jest/types': 30.4.1
+      babel-jest: 30.4.1(@babel/core@7.29.7)
+      chalk: 4.1.2
+      ci-info: 4.4.0
+      deepmerge: 4.3.1
+      glob: 10.5.0
+      graceful-fs: 4.2.11
+      jest-circus: 30.4.2
+      jest-docblock: 30.4.0
+      jest-environment-node: 30.4.1
+      jest-regex-util: 30.4.0
+      jest-resolve: 30.4.1
+      jest-runner: 30.4.2
+      jest-util: 30.4.1
+      jest-validate: 30.4.1
+      parse-json: 5.2.0
+      pretty-format: 30.4.1
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 24.13.3
+      ts-node: 10.9.2(@types/node@24.13.2)(typescript@5.9.3)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+
   jest-diff@30.4.1:
     dependencies:
       '@jest/diff-sequences': 30.4.0
@@ -11928,7 +11939,7 @@ snapshots:
       '@jest/environment': 30.4.1
       '@jest/fake-timers': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       jest-mock: 30.4.1
       jest-util: 30.4.1
       jest-validate: 30.4.1
@@ -11976,7 +11987,7 @@ snapshots:
   jest-mock@30.4.1:
     dependencies:
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       jest-util: 30.4.1
 
   jest-pnp-resolver@1.2.3(jest-resolve@30.4.1):
@@ -12010,7 +12021,7 @@ snapshots:
       '@jest/test-result': 30.4.1
       '@jest/transform': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       chalk: 4.1.2
       emittery: 0.13.1
       exit-x: 0.2.2
@@ -12039,7 +12050,7 @@ snapshots:
       '@jest/test-result': 30.4.1
       '@jest/transform': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       chalk: 4.1.2
       cjs-module-lexer: 2.2.0
       collect-v8-coverage: 1.0.3
@@ -12105,7 +12116,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 30.4.1
       '@jest/types': 30.4.1
-      '@types/node': 24.13.2
+      '@types/node': 24.13.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -12648,7 +12659,7 @@ snapshots:
       cssnano: 7.1.9(postcss@8.5.23)
       cssnano-preset-lite: 4.0.6(postcss@8.5.23)
       detect-node: 2.1.0
-      htmlnano: 3.3.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.23)(svgo@4.0.1)(terser@5.49.0)(typescript@5.9.3)
+      htmlnano: 3.3.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(svgo@4.0.1)(terser@5.49.0)(typescript@5.9.3)
       js-beautify: 1.15.4
       juice: 11.1.1
       lodash: 4.18.1
@@ -13082,9 +13093,6 @@ snapshots:
   named-placeholders@1.1.6:
     dependencies:
       lru.min: 1.1.4
-
-  nanoid@3.3.15:
-    optional: true
 
   nanoid@3.3.16:
     optional: true
@@ -13555,26 +13563,10 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-calc@10.1.1(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-calc@10.1.1(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
       postcss-selector-parser: 7.1.4
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-colormin@7.0.10(postcss@8.5.15):
-    dependencies:
-      '@colordx/core': 5.5.0
-      browserslist: 4.28.7
-      caniuse-api: 3.0.0
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13587,24 +13579,11 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-convert-values@7.0.12(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-convert-values@7.0.12(postcss@8.5.23):
     dependencies:
       browserslist: 4.28.7
       postcss: 8.5.23
       postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-discard-comments@7.0.8(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
     optional: true
 
   postcss-discard-comments@7.0.8(postcss@8.5.23):
@@ -13613,19 +13592,9 @@ snapshots:
       postcss-selector-parser: 7.1.4
     optional: true
 
-  postcss-discard-duplicates@7.0.4(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-    optional: true
-
   postcss-discard-duplicates@7.0.4(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-    optional: true
-
-  postcss-discard-empty@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
     optional: true
 
   postcss-discard-empty@7.0.3(postcss@8.5.23):
@@ -13633,21 +13602,9 @@ snapshots:
       postcss: 8.5.23
     optional: true
 
-  postcss-discard-overridden@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-    optional: true
-
   postcss-discard-overridden@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-    optional: true
-
-  postcss-merge-longhand@7.0.7(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-      stylehacks: 7.0.11(postcss@8.5.15)
     optional: true
 
   postcss-merge-longhand@7.0.7(postcss@8.5.23):
@@ -13655,15 +13612,6 @@ snapshots:
       postcss: 8.5.23
       postcss-value-parser: 4.2.0
       stylehacks: 7.0.11(postcss@8.5.23)
-    optional: true
-
-  postcss-merge-rules@7.0.11(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      caniuse-api: 3.0.0
-      cssnano-utils: 5.0.3(postcss@8.5.15)
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
     optional: true
 
   postcss-merge-rules@7.0.11(postcss@8.5.23):
@@ -13675,23 +13623,9 @@ snapshots:
       postcss-selector-parser: 7.1.4
     optional: true
 
-  postcss-minify-font-values@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-minify-font-values@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-minify-gradients@7.0.5(postcss@8.5.15):
-    dependencies:
-      '@colordx/core': 5.5.0
-      cssnano-utils: 5.0.3(postcss@8.5.15)
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13703,29 +13637,12 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-minify-params@7.0.9(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      cssnano-utils: 5.0.3(postcss@8.5.15)
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-minify-params@7.0.9(postcss@8.5.23):
     dependencies:
       browserslist: 4.28.7
       cssnano-utils: 5.0.3(postcss@8.5.23)
       postcss: 8.5.23
       postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-minify-selectors@7.1.2(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      caniuse-api: 3.0.0
-      cssesc: 3.0.0
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
     optional: true
 
   postcss-minify-selectors@7.1.2(postcss@8.5.23):
@@ -13737,31 +13654,14 @@ snapshots:
       postcss-selector-parser: 7.1.4
     optional: true
 
-  postcss-normalize-charset@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-    optional: true
-
   postcss-normalize-charset@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
     optional: true
 
-  postcss-normalize-display-values@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-normalize-display-values@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-normalize-positions@7.0.4(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13771,21 +13671,9 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-normalize-repeat-style@7.0.4(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-normalize-repeat-style@7.0.4(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-normalize-string@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13795,22 +13683,9 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-normalize-timing-functions@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-normalize-timing-functions@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-normalize-unicode@7.0.9(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13821,34 +13696,15 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-normalize-url@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-normalize-url@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-normalize-whitespace@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-    optional: true
-
   postcss-normalize-whitespace@7.0.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
-      postcss-value-parser: 4.2.0
-    optional: true
-
-  postcss-ordered-values@7.0.4(postcss@8.5.15):
-    dependencies:
-      cssnano-utils: 5.0.3(postcss@8.5.15)
-      postcss: 8.5.15
       postcss-value-parser: 4.2.0
     optional: true
 
@@ -13859,24 +13715,11 @@ snapshots:
       postcss-value-parser: 4.2.0
     optional: true
 
-  postcss-reduce-initial@7.0.9(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      caniuse-api: 3.0.0
-      postcss: 8.5.15
-    optional: true
-
   postcss-reduce-initial@7.0.9(postcss@8.5.23):
     dependencies:
       browserslist: 4.28.7
       caniuse-api: 3.0.0
       postcss: 8.5.23
-    optional: true
-
-  postcss-reduce-transforms@7.0.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
     optional: true
 
   postcss-reduce-transforms@7.0.3(postcss@8.5.23):
@@ -13891,24 +13734,11 @@ snapshots:
       util-deprecate: 1.0.2
     optional: true
 
-  postcss-svgo@7.1.3(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-value-parser: 4.2.0
-      svgo: 4.0.1
-    optional: true
-
   postcss-svgo@7.1.3(postcss@8.5.23):
     dependencies:
       postcss: 8.5.23
       postcss-value-parser: 4.2.0
       svgo: 4.0.1
-    optional: true
-
-  postcss-unique-selectors@7.0.7(postcss@8.5.15):
-    dependencies:
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
     optional: true
 
   postcss-unique-selectors@7.0.7(postcss@8.5.23):
@@ -13918,13 +13748,6 @@ snapshots:
     optional: true
 
   postcss-value-parser@4.2.0:
-    optional: true
-
-  postcss@8.5.15:
-    dependencies:
-      nanoid: 3.3.15
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
     optional: true
 
   postcss@8.5.23:
@@ -14033,6 +13856,8 @@ snapshots:
   process-nextick-args@2.0.1: {}
 
   progress@2.0.3: {}
+
+  promise-breaker@6.0.0: {}
 
   promise@7.3.1:
     dependencies:
@@ -14771,13 +14596,6 @@ snapshots:
     dependencies:
       '@tokenizer/token': 0.3.0
 
-  stylehacks@7.0.11(postcss@8.5.15):
-    dependencies:
-      browserslist: 4.28.7
-      postcss: 8.5.15
-      postcss-selector-parser: 7.1.4
-    optional: true
-
   stylehacks@7.0.11(postcss@8.5.23):
     dependencies:
       browserslist: 4.28.7
@@ -14896,16 +14714,16 @@ snapshots:
       type-fest: 2.19.0
       unique-string: 3.0.0
 
-  terser-webpack-plugin@5.6.1(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)):
+  terser-webpack-plugin@5.6.1(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.49.0
-      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)
+      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)
     optionalDependencies:
-      cssnano: 7.1.9(postcss@8.5.15)
-      postcss: 8.5.15
+      cssnano: 7.1.9(postcss@8.5.23)
+      postcss: 8.5.23
 
   terser@5.49.0:
     dependencies:
@@ -15002,13 +14820,13 @@ snapshots:
       babel-jest: 30.4.1(@babel/core@7.29.7)
       jest-util: 30.4.1
 
-  ts-loader@9.6.2(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)):
+  ts-loader@9.6.2(typescript@5.9.3)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)):
     dependencies:
       chalk: 4.1.2
       picomatch: 4.0.4
       source-map: 0.7.6
       typescript: 5.9.3
-      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)
+      webpack: 5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)
 
   ts-node@10.9.2(@types/node@24.13.2)(typescript@5.9.3):
     dependencies:
@@ -15281,7 +15099,7 @@ snapshots:
 
   webpack-sources@3.5.1: {}
 
-  webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15):
+  webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.9
@@ -15304,7 +15122,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.15))(postcss@8.5.15))
+      terser-webpack-plugin: 5.6.1(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23)(webpack@5.106.2(cssnano@7.1.9(postcss@8.5.23))(postcss@8.5.23))
       watchpack: 2.5.2
       webpack-sources: 3.5.1
     transitivePeerDependencies:

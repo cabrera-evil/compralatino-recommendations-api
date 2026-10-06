@@ -16,6 +16,7 @@ import { AuditLogService } from './modules/audit-log/audit-log.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { EncryptionModule } from './modules/encryption/encryption.module';
+import { EventsModule } from './modules/events/events.module';
 import { FileModule } from './modules/file/file.module';
 import { HealthModule } from './modules/health/health.module';
 import { PdfModule } from './modules/pdf/pdf.module';
@@ -33,6 +34,7 @@ import { UserModule } from './modules/user/user.module';
 		AuthModule,
 		CloudinaryModule,
 		EncryptionModule,
+		EventsModule,
 		FileModule,
 		HealthModule,
 		PermissionModule,
