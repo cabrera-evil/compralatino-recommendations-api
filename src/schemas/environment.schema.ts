@@ -36,6 +36,7 @@ export const EnvironmentSchema = Joi.object({
 		then: Joi.required(),
 		otherwise: Joi.optional(),
 	}),
+	CATALOG_RPC_TIMEOUT_MS: Joi.number().integer().min(100).default(5000),
 
 	CORS_ORIGIN: Joi.string().optional(),
 
