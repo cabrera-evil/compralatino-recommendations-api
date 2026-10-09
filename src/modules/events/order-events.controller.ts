@@ -1,52 +1,61 @@
 import { OrderEventPattern } from '@/constants/events';
+import {
+	parseOrderCreated,
+	parseOrderUpdated,
+} from '@/modules/order-history/order-event.parser';
+import { OrderHistoryService } from '@/modules/order-history/order-history.service';
 import { Controller, Logger } from '@nestjs/common';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-
-interface OrderCreatedEvent {
-	orderId: number;
-	userId: number;
-	status: string;
-	totalAmount: string;
-	orderDate: string;
-}
-
-interface OrderUpdatedEvent {
-	orderId: number;
-	status: string;
-}
 
 @Controller()
 export class OrderEventsController {
 	private readonly logger = new Logger(OrderEventsController.name);
 
+	constructor(private readonly history: OrderHistoryService) {}
+
 	@EventPattern(OrderEventPattern.CREATED)
-	handleOrderCreated(
-		@Payload() data: OrderCreatedEvent,
+	async handleOrderCreated(
+		@Payload() data: unknown,
 		@Ctx() context: RmqContext
-	): void {
-		this.logger.log(
-			`Received "${OrderEventPattern.CREATED}": ${JSON.stringify(data)}`
+	): Promise<void> {
+		const event = parseOrderCreated(data);
+		await this.settle(context, OrderEventPattern.CREATED, event, (e) =>
+			this.history.recordCreated(e)
 		);
-
-		// TODO: recommendations_svc business logic (see Fase-2-CompraLatino-Mermaid.md 4.3 —
-		// `recommendations` schema is a first-cut design, not yet fleshed out for this handler).
-
-		const channel = context.getChannelRef();
-		channel.ack(context.getMessage());
 	}
 
 	@EventPattern(OrderEventPattern.UPDATED)
-	handleOrderUpdated(
-		@Payload() data: OrderUpdatedEvent,
+	async handleOrderUpdated(
+		@Payload() data: unknown,
 		@Ctx() context: RmqContext
-	): void {
-		this.logger.log(
-			`Received "${OrderEventPattern.UPDATED}": ${JSON.stringify(data)}`
+	): Promise<void> {
+		const event = parseOrderUpdated(data);
+		await this.settle(context, OrderEventPattern.UPDATED, event, (e) =>
+			this.history.recordUpdated(e)
 		);
+	}
 
-		// TODO: recommendations_svc business logic (see Fase-2-CompraLatino-Mermaid.md 4.3).
-
+	/** Malformed: ack without change. Duplicate: ack. Persistence failure: requeue. */
+	private async settle<T>(
+		context: RmqContext,
+		pattern: string,
+		event: T | null,
+		apply: (event: T) => Promise<boolean>
+	): Promise<void> {
 		const channel = context.getChannelRef();
-		channel.ack(context.getMessage());
+		const message = context.getMessage();
+		if (!event) {
+			this.logger.warn(`Ignoring malformed "${pattern}" payload`);
+			channel.ack(message);
+			return;
+		}
+		try {
+			const applied = await apply(event);
+			if (!applied) this.logger.log(`Duplicate "${pattern}" ignored`);
+			channel.ack(message);
+		} catch (error) {
+			this.logger.error(`Failed to process "${pattern}": ${String(error)}`);
+			channel.nack(message, false, true);
+		}
 	}
 }
