@@ -1,3 +1,23 @@
+## 1.0.0-beta.1 (2026-10-10)
+
+### Features
+
+* **auth:** add jwt strategy, guard and current-user decorator ([70dc709](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/70dc7091a046c9f75753cca426a3a1579524a882))
+* **catalog-client:** add rabbitmq product validation client ([ef820fa](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/ef820fa78705f54f3383ea59c00c3828a38a9c7b))
+* **order-history:** consume order events idempotently into order lines ([52e6853](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/52e68534bfcb31bb9cbef7fdcc5b3590a08b00a6))
+* prisma schema and initial migration for recommendations_svc ([8543aff](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/8543aff4ed3c1842926757b47a8df7462876b4ea))
+* **prisma:** add order lines and processed events tables with migration ([d47934f](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/d47934f1c78a74e328ae67f0bed0e91e13b573f5))
+* **rabbitmq:** add rabbitmq transport and order events ([f5f6bac](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/f5f6baca93356b9356cfdc2451fa76fac9112702))
+* **recommendations:** serve per-user recommendations by co-purchase and popularity ([e156d2e](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/e156d2ebd2d8b860769b93919d1586d3896c75f9))
+
+### Bug Fixes
+
+* **deps:** upgrade handlebars to 4.7.10 ([54632a3](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/54632a3a4603c70fc6d8a594d566c364a5bfe6c8))
+* **deps:** upgrade vulnerable dependencies and align nestjs packages ([2ba056c](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/2ba056c71ec5d2fb8daf7b5ec8159d57b0764d25))
+* **docker:** redeclare the pnpm version arg in the base stage ([c453a64](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/c453a6428518fc75797de6c942f0688f9d1d26d2))
+* **health:** make disk threshold a percentage configurable via HEALTH_DISK_THRESHOLD_PERCENT ([a54c996](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/a54c996dcf54b2851bcf3d4bf1ff1b1c20c09e5e))
+* **ws:** avoid logger name clash with the io adapter ([49ce909](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/49ce9099ee2761793192385922747f537ecbfb47))
+
 ## [1.4.0](https://github.com/cabrera-evil/nestjs-template/compare/v1.3.1...v1.4.0) (2025-09-18)
 
 ### Features
