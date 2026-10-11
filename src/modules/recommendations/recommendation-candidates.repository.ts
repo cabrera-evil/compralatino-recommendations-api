@@ -14,11 +14,15 @@ export type ScoredCode = { productCode: string; score: number };
 export class RecommendationCandidatesRepository {
 	constructor(private readonly prisma: PrismaClient) {}
 
-	/** The caller's distinct ordered product codes, most recent first. */
-	async userHistory(userId: number): Promise<string[]> {
+	/** The caller's distinct ordered product codes, most recent first (optionally only orders before `beforeOrderId`). */
+	async userHistory(userId: number, beforeOrderId?: number): Promise<string[]> {
 		const rows = await this.prisma.orderLine.groupBy({
 			by: ['productCode'],
-			where: { userId, status: { notIn: EXCLUDED_ORDER_STATUSES } },
+			where: {
+				userId,
+				status: { notIn: EXCLUDED_ORDER_STATUSES },
+				...(beforeOrderId !== undefined && { orderId: { lt: beforeOrderId } }),
+			},
 			_max: { createdAt: true },
 			orderBy: { _max: { createdAt: 'desc' } },
 			take: MAX_HISTORY_CODES,

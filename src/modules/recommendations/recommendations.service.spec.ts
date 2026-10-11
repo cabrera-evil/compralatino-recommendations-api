@@ -115,3 +115,61 @@ describe('RecommendationsService ranking (yac-* codes)', () => {
 		expect(res.data.map((r) => r.productCode)).toEqual(['yac-b']);
 	});
 });
+
+describe('RecommendationsService purchaseMatch', () => {
+	it('matches orders whose lines hit the recommendations computed before that order', async () => {
+		const { service, repo } = build(
+			[],
+			[],
+			[{ productCode: 'yac-1', score: 3 }],
+			[product('yac-1', null)]
+		);
+		const res = await service.purchaseMatch([
+			{ orderId: 10, userId: 1, productCodes: ['yac-1', 'yac-9'] },
+			{ orderId: 11, userId: 2, productCodes: ['yac-9'] },
+		]);
+		expect(repo.userHistory).toHaveBeenCalledWith(1, 10);
+		expect(res).toEqual({ sampledOrders: 2, matchedOrders: 1, rate: 0.5 });
+	});
+
+	it('is zero when there are no orders', async () => {
+		const { service } = build([], [], [], []);
+		expect(await service.purchaseMatch([])).toEqual({
+			sampledOrders: 0,
+			matchedOrders: 0,
+			rate: 0,
+		});
+	});
+});
+
+describe('RecommendationsService purchaseMatch concurrency', () => {
+	it('never runs more than the limit of rank() calls at once, keeping results', async () => {
+		const { service, repo } = build(
+			[],
+			[],
+			[{ productCode: 'yac-1', score: 1 }],
+			[product('yac-1', null)]
+		);
+		let inFlight = 0;
+		let max = 0;
+		repo.userHistory.mockImplementation(async () => {
+			max = Math.max(max, ++inFlight);
+			await new Promise((r) => setTimeout(r, 5));
+			inFlight--;
+			return [];
+		});
+		const orders = Array.from({ length: 23 }, (_, i) => ({
+			orderId: i + 1,
+			userId: 1,
+			productCodes: i % 2 ? ['yac-1'] : ['other'],
+		}));
+		const res = await service.purchaseMatch(orders);
+		expect(max).toBeLessThanOrEqual(5);
+		expect(max).toBeGreaterThan(1);
+		expect(res).toEqual({
+			sampledOrders: 23,
+			matchedOrders: 11,
+			rate: 11 / 23,
+		});
+	});
+});
