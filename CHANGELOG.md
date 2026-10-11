@@ -1,3 +1,9 @@
+## [1.0.0-beta.2](https://github.com/cabrera-evil/compralatino-recommendations-api/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2026-10-11)
+
+### Features
+
+* **recommendations:** add purchase-match RPC with capped concurrency ([d729f44](https://github.com/cabrera-evil/compralatino-recommendations-api/commit/d729f44b2997b02baad2469c432fd711fcbfca70))
+
 ## 1.0.0-beta.1 (2026-10-10)
 
 ### Features
