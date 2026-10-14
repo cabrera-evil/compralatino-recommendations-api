@@ -2,6 +2,8 @@ import {
 	CANDIDATE_LIMIT,
 	HISTORY_ENRICH_LIMIT,
 	MAX_RECOMMENDATION_PAGE_SIZE,
+	PURCHASE_MATCH_CONCURRENCY,
+	PURCHASE_MATCH_MAX_ORDERS,
 } from '@/constants/recommendations';
 import { CatalogClientService } from '@/modules/catalog-client/catalog-client.service';
 import { paginatedResponse } from '@/utils/response.util';
@@ -14,6 +16,12 @@ import {
 } from './recommendation.serializer';
 
 export type RecommendationsQuery = { take?: number; skip?: number };
+
+export type PurchaseMatchOrder = {
+	orderId: number;
+	userId: number;
+	productCodes: string[];
+};
 
 type Candidate = {
 	productCode: string;
@@ -41,8 +49,43 @@ export class RecommendationsService {
 		);
 	}
 
-	private async rank(userId: number): Promise<Recommendation[]> {
-		const history = await this.candidates.userHistory(userId);
+	/**
+	 * Share of `orders` having a line among the user's recommendations. Approximate:
+	 * history is cut before each order (so its own lines are not excluded), but the
+	 * co-purchase and popularity signals are current.
+	 */
+	async purchaseMatch(orders: PurchaseMatchOrder[]) {
+		const sample = orders.slice(0, PURCHASE_MATCH_MAX_ORDERS);
+		const hits: boolean[] = new Array(sample.length);
+		let next = 0;
+		// Fixed pool of workers pulling the next index; results keep input order.
+		const worker = async () => {
+			while (next < sample.length) {
+				const i = next++;
+				const { orderId, userId, productCodes } = sample[i];
+				const ranked = await this.rank(userId, orderId);
+				const codes = new Set(ranked.map((r) => r.productCode));
+				hits[i] = productCodes.some((code) => codes.has(code));
+			}
+		};
+		await Promise.all(
+			Array.from({ length: PURCHASE_MATCH_CONCURRENCY }, worker)
+		);
+		const matchedOrders = hits.filter(Boolean).length;
+		return {
+			sampledOrders: sample.length,
+			matchedOrders,
+			rate: sample.length ? matchedOrders / sample.length : 0,
+		};
+	}
+
+	private async rank(
+		userId: number,
+		beforeOrderId?: number
+	): Promise<Recommendation[]> {
+		const history = await (beforeOrderId === undefined
+			? this.candidates.userHistory(userId)
+			: this.candidates.userHistory(userId, beforeOrderId));
 		const [coPurchased, popular] = await Promise.all([
 			this.candidates.coPurchased(history),
 			this.candidates.popular(history),
