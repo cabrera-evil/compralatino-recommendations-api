@@ -173,3 +173,98 @@ describe('RecommendationsService purchaseMatch concurrency', () => {
 		});
 	});
 });
+
+describe('RecommendationsService edge and failure cases', () => {
+	it('ranks a popular product without a category after categorised ones (tier 2)', async () => {
+		const { service } = build(
+			['yac-1'],
+			[],
+			[
+				{ productCode: 'yac-8', score: 9 },
+				{ productCode: 'yac-9', score: 1 },
+			],
+			[
+				product('yac-1', 'cams'),
+				product('yac-8', null),
+				product('yac-9', 'cams'),
+			]
+		);
+		const res = await service.findAll(1, {});
+		expect(res.data.map((r) => r.productCode)).toEqual(['yac-9', 'yac-8']);
+	});
+
+	it('clamps pageSize to the maximum and defaults take/skip', async () => {
+		const popular = Array.from({ length: 60 }, (_, i) => ({
+			productCode: `yac-${i}`,
+			score: 1,
+		}));
+		const { service } = build(
+			[],
+			[],
+			popular,
+			popular.map((p) => product(p.productCode, null))
+		);
+		const res = await service.findAll(1, { take: 500 });
+		expect(res.data).toHaveLength(40); // CANDIDATE_LIMIT caps the pool
+		const small = await service.findAll(1, { take: 5, skip: 3 });
+		expect(small.data).toHaveLength(5);
+		expect(small.pagination).toMatchObject({ pageSize: 5, total: 40 });
+	});
+
+	it('only enriches the first history codes plus candidates, once each request', async () => {
+		const history = Array.from({ length: 30 }, (_, i) => `h-${i}`);
+		const { service, client } = build(
+			history,
+			[{ productCode: 'yac-1', score: 1 }],
+			[],
+			[product('yac-1', null)]
+		);
+		await service.findAll(1, {});
+		const codes = client.getAvailable.mock.calls[0][0] as string[];
+		expect(codes.slice(0, 10)).toEqual(history.slice(0, 10));
+		expect(codes).toHaveLength(11);
+	});
+
+	it('propagates a catalog outage from findAll', async () => {
+		const { service, client } = build(
+			[],
+			[{ productCode: 'a', score: 1 }],
+			[],
+			[]
+		);
+		client.getAvailable.mockRejectedValue(new Error('CATALOG_UNAVAILABLE'));
+		await expect(service.findAll(1, {})).rejects.toThrow('CATALOG_UNAVAILABLE');
+	});
+
+	it('propagates a repository failure from findAll', async () => {
+		const { service, repo } = build([], [], [], []);
+		repo.userHistory.mockRejectedValue(new Error('db down'));
+		await expect(service.findAll(1, {})).rejects.toThrow('db down');
+	});
+
+	it('purchaseMatch samples at most 50 orders', async () => {
+		const { service, repo } = build([], [], [], []);
+		const orders = Array.from({ length: 80 }, (_, i) => ({
+			orderId: i + 1,
+			userId: 1,
+			productCodes: ['x'],
+		}));
+		const res = await service.purchaseMatch(orders);
+		expect(res.sampledOrders).toBe(50);
+		expect(repo.userHistory).toHaveBeenCalledTimes(50);
+	});
+
+	it('purchaseMatch rejects when ranking fails for any order', async () => {
+		const { service, repo } = build([], [], [], []);
+		repo.userHistory.mockRejectedValue(new Error('db down'));
+		await expect(
+			service.purchaseMatch([{ orderId: 1, userId: 1, productCodes: ['x'] }])
+		).rejects.toThrow('db down');
+	});
+
+	it('findAll ranks without a cut-off order id (single-arg history call)', async () => {
+		const { service, repo } = build([], [], [], []);
+		await service.findAll(5, {});
+		expect(repo.userHistory).toHaveBeenCalledWith(5);
+	});
+});
